@@ -7,6 +7,8 @@ import { questionsBySDG } from './data/questions';
 
 const ROTARY_LOGO = 'https://cdn.worldvectorlogo.com/logos/rotary-international.svg';
 
+const getSDGImagePath = (id) => `/sdg-logos/E-WEB-Goal-${String(id).padStart(2, '0')}.png`;
+
 const styles = `
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body, #root { height: 100%; }
@@ -39,7 +41,6 @@ const styles = `
   .sdg-welcome-content { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.5rem; padding: 2.5rem; max-width: 700px; margin: 0 auto; width: 100%; max-height: 70vh; overflow-y: auto; }
   .sdg-welcome-title { font-size: 1.75rem; font-weight: bold; margin-bottom: 1.5rem; background: linear-gradient(90deg, #06b6d4, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .sdg-welcome-text { font-size: 0.95rem; line-height: 1.8; color: #cbd5e1; margin-bottom: 1.25rem; }
-  .sdg-welcome-section { margin-bottom: 1rem; }
   .sdg-input-field { width: 100%; padding: 0.75rem; margin-bottom: 0.75rem; background-color: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; color: #ffffff; font-size: 1rem; font-family: inherit; }
   .sdg-input-field:focus { outline: none; border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
   .sdg-names-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
@@ -51,7 +52,6 @@ const styles = `
   .sdg-select-button { background: linear-gradient(90deg, #f59e0b, #ef4444) !important; padding: 0.75rem 2rem; }
   .sdg-select-button:hover { filter: brightness(1.1) !important; }
   .sdg-footer { flex-shrink: 0; padding-top: 1rem; border-top: 1px solid #334155; display: flex; align-items: center; justify-content: center; gap: 1rem; }
-  .sdg-footer-text { font-size: 0.875rem; color: #94a3b8; }
   .sdg-footer-brand { color: #06b6d4; font-weight: 600; font-size: 0.875rem; }
   .sdg-card-selection { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; height: 100%; align-items: center; }
   .sdg-round-info { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.5rem; padding: 1.5rem; }
@@ -61,10 +61,10 @@ const styles = `
   .sdg-sdg-id { color: #94a3b8; font-size: 0.875rem; }
   .sdg-card-right { display: flex; flex-direction: column; gap: 1rem; max-height: 600px; overflow-y: auto; }
   .sdg-questions-group { display: flex; flex-direction: column; gap: 1rem; }
-  .sdg-question-button { text-align: left; padding: 1.25rem; background-color: #1e293b; border: 1px solid #334155; border-radius: 0.5rem; cursor: pointer; transition: all 0.3s ease; color: white; font-size: 0.95rem; }
-  .sdg-question-button:hover { background-color: #334155; border-color: #06b6d4; }
+  .sdg-question-button { text-align: left; padding: 1.25rem; background-color: #1e293b; border: 2px solid #334155; border-radius: 0.5rem; cursor: pointer; transition: all 0.3s ease; color: white; font-size: 0.95rem; min-height: 100px; display: flex; flex-direction: column; justify-content: center; }
+  .sdg-question-button:hover { background-color: #334155; border-color: #06b6d4; transform: translateY(-2px); box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
   .sdg-question-label { font-size: 0.875rem; font-weight: 600; color: #06b6d4; margin-bottom: 0.25rem; }
-  .sdg-question-text { color: white; font-size: 0.95rem; }
+  .sdg-question-text { color: #cbd5e1; font-size: 0.95rem; }
   .sdg-skip-button { margin-top: auto; }
   .sdg-discussion-layout { display: flex; flex-direction: column; height: 100%; gap: 1.5rem; }
   .sdg-discussion-top { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; flex-shrink: 0; }
@@ -92,61 +92,14 @@ const styles = `
   .sdg-participant-done { background-color: #064e3b; color: #d1fae5; }
   .sdg-participant-current { background-color: #155e75; color: #cffafe; border: 2px solid #06b6d4; }
   .sdg-participant-waiting { background-color: #334155; color: #cbd5e1; }
-  .sdg-carousel-container {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    margin: -0.5rem 0;
-    overflow: hidden;
-    border-radius: 1rem;
-  }
-  .sdg-carousel {
-    display: flex;
-    animation: scroll-carousel 40s linear infinite;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  @keyframes scroll-carousel {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
-  .sdg-carousel-item {
-    flex-shrink: 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    border: 2px solid;
-    padding: 0.5rem;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.65rem;
-    line-height: 1.1;
-  }
-  .sdg-carousel-icon {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-  }
-  .sdg-carousel-number {
-    color: #cbd5e1;
-    font-size: 0.75rem;
-    font-weight: bold;
-  }
-  .sdg-carousel-name {
-    color: #ffffff;
-    font-size: 0.6rem;
-    line-height: 1.2;
-  }
+  .sdg-carousel-container { position: relative; width: 100%; height: 180px; margin: -0.5rem 0; overflow: hidden; border-radius: 1rem; }
+  .sdg-carousel { display: flex; animation: scroll-carousel 40s linear infinite; gap: 1rem; padding: 1rem; }
+  @keyframes scroll-carousel { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .sdg-carousel-item { flex-shrink: 0; width: 100px; height: 100px; border-radius: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; border: 2px solid; padding: 0.5rem; text-align: center; font-weight: 600; font-size: 0.65rem; line-height: 1.1; }
+  .sdg-carousel-icon { width: 60px; height: 60px; object-fit: contain; }
+  .sdg-carousel-number { color: #cbd5e1; font-size: 0.75rem; font-weight: bold; }
+  .sdg-carousel-name { color: #ffffff; font-size: 0.6rem; line-height: 1.2; }
 `;
-
-const getSDGImagePath = (id) => {
-  return `/sdg-logos/E-WEB-Goal-${String(id).padStart(2, '0')}.png`;
-};
 
 export default function SDGGame() {
   const [gameState, setGameState] = useState('welcome');
@@ -205,7 +158,9 @@ export default function SDGGame() {
 
   const animatePlayerSelection = () => {
     setIsAnimating(true);
-    const randomFinalIndex = Math.floor(Math.random() * playerList.length);
+    const availablePlayers = playerList.filter((p, idx) => !playersCompleted.includes(p));
+    const randomIndex = Math.floor(Math.random() * availablePlayers.length);
+    const randomFinalIndex = playerList.indexOf(availablePlayers[randomIndex]);
     let speed = 50;
     let currentIndex = 0;
     let displayIndex = 0;
@@ -264,7 +219,11 @@ export default function SDGGame() {
     setTimerActive(true);
   };
 
-  const moveToGroupDiscussion = () => {
+  const resumeTimer = () => {
+    setTimerActive(true);
+  };
+
+  const transitionToGroupDiscussion = () => {
     setTimeLeft(prev => prev + 360);
     setTimerMode('group');
     setTimerActive(true);
@@ -299,6 +258,7 @@ export default function SDGGame() {
           styles={styles} 
           sdgs={sdgs}
           onAdmin={() => setShowAdmin(true)}
+          getSDGImagePath={getSDGImagePath}
         />
         {showAdmin && (
           <Admin 
@@ -341,8 +301,8 @@ export default function SDGGame() {
                 <h2 className="sdg-card-title">Setup</h2>
                 <div style={{ marginBottom: '2rem' }}>
                   <label className="sdg-label">Aantal deelnemers: <span className="sdg-label-value">{players}</span></label>
-                  <input type="range" min="6" max="12" value={players} onChange={(e) => setPlayers(parseInt(e.target.value))} className="sdg-slider" />
-                  <div className="sdg-slider-labels"><span>6</span><span>12</span></div>
+                  <input type="range" min="2" max="12" value={players} onChange={(e) => setPlayers(parseInt(e.target.value))} className="sdg-slider" />
+                  <div className="sdg-slider-labels"><span>2</span><span>12</span></div>
                 </div>
                 <button onClick={startGame} className="sdg-button">
                   <Play size={24} /> Volgende
@@ -476,7 +436,7 @@ export default function SDGGame() {
                   </div>
 
                   <div className="sdg-sdg-card" style={{ backgroundColor: currentCard.color + '20', borderColor: currentCard.color }}>
-                    <img src={getSDGImagePath(currentCard.id)} alt={currentCard.name} className="sdg-sdg-icon" onError={(e) => { e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22%3E%3C/svg%3E'; }} />
+                    <img src={getSDGImagePath(currentCard.id)} alt={currentCard.name} className="sdg-sdg-icon" />
                     <h2 className="sdg-sdg-name">{currentCard.name}</h2>
                     <p className="sdg-sdg-id">Doel #{currentCard.id}</p>
                   </div>
@@ -530,7 +490,7 @@ export default function SDGGame() {
               <div className="sdg-discussion-top">
                 <div className="sdg-discussion-card" style={{ backgroundColor: currentCard.color + '20', borderColor: currentCard.color }}>
                   <div className="sdg-discussion-header">
-                    <img src={getSDGImagePath(currentCard.id)} alt={currentCard.name} className="sdg-discussion-icon" onError={(e) => { e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22%3E%3C/svg%3E'; }} />
+                    <img src={getSDGImagePath(currentCard.id)} alt={currentCard.name} className="sdg-discussion-icon" />
                     <div className="sdg-discussion-info">
                       <h2>{currentCard.name}</h2>
                       <p>Doel #{currentCard.id}</p>
@@ -563,12 +523,15 @@ export default function SDGGame() {
                           </button>
                         )}
                         {!timerActive && (
-                          <button onClick={moveToGroupDiscussion} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px' }}>
-                            Doorgaan (6 min)
+                          <button onClick={resumeTimer} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px' }}>
+                            <Play size={18} /> Hervatten
                           </button>
                         )}
-                        <button onClick={moveToGroupDiscussion} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px', background: '#10b981' }}>
-                          <CheckCircle2 size={18} /> Klaar
+                        <button onClick={transitionToGroupDiscussion} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px', background: '#10b981' }}>
+                          <CheckCircle2 size={18} /> Doorgaan (6 min)
+                        </button>
+                        <button onClick={finishTurn} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px', background: '#e74c3c' }}>
+                          <CheckCircle2 size={18} /> Klaar!
                         </button>
                       </div>
                     </div>
@@ -585,12 +548,15 @@ export default function SDGGame() {
                           </button>
                         )}
                         {!timerActive && (
-                          <button onClick={() => setTimerActive(true)} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px' }}>
+                          <button onClick={resumeTimer} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px' }}>
                             <Play size={18} /> Hervatten
                           </button>
                         )}
                         <button onClick={finishTurn} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px', background: '#10b981' }}>
                           <CheckCircle2 size={18} /> Volgende
+                        </button>
+                        <button onClick={finishTurn} className="sdg-button" style={{ marginTop: '0.5rem', flex: '1', minWidth: '120px', background: '#e74c3c' }}>
+                          <CheckCircle2 size={18} /> Klaar!
                         </button>
                       </div>
                     </div>
