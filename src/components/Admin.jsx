@@ -8,7 +8,7 @@ const Admin = ({ onClose, questionsBySDG, sdgs, onSave }) => {
   const [editingSdg, setEditingSdg] = useState(null);
   const [editingQuestion, setEditingQuestion] = useState(null);
 
-  const ADMIN_PASSWORD = 'admin123'; // Verander dit!
+  const ADMIN_PASSWORD = 'Kl1m4tL!3efRC'; // Verander dit!
 
   const handleLogin = () => {
     if (password === ADMIN_PASSWORD) {
