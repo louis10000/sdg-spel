@@ -1,4 +1,4 @@
-	import React from 'react';
+import React from 'react';
 import { Play } from 'lucide-react';
 
 const Welcome = ({ onStart, styles, sdgs, onAdmin }) => {
@@ -7,13 +7,13 @@ const Welcome = ({ onStart, styles, sdgs, onAdmin }) => {
       <style>{styles}</style>
       <div className="sdg-wrapper">
         <div className="sdg-header-bar">
-          <div className="sdg-logo-section">
+          <a href="https://www.rotary.nl/leefklimaat/" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', cursor: 'pointer' }}>
             <img src="https://cdn.worldvectorlogo.com/logos/rotary-international.svg" alt="Rotary Logo" className="sdg-rotary-logo" />
             <div>
               <div className="sdg-header-title">RC Leefklimaat</div>
               <div className="sdg-header-subtitle">Rotary Club</div>
             </div>
-          </div>
+          </a>
         </div>
 
         <div className="sdg-content">
