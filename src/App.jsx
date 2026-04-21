@@ -350,8 +350,7 @@ export default function SDGGame() {
                   {playerList.map((_, idx) => (
                     <div key={idx} className="sdg-name-input-group">
                       <label className="sdg-name-label">Speler {idx + 1}</label>
-                      <input type="text" className="sdg-input-field" value={playerNames[idx] || ''} onChange={(e) => setPlayerNames({ ...playerNames, [idx]: e.target.value })} placeholder={`Speler ${idx + 1}`} maxLength="20" />
-                    </div>
+<input type="text" className="sdg-input-field" value={playerNames[idx] || `Speler ${idx + 1}`} onChange={(e) => setPlayerNames({ ...playerNames, [idx]: e.target.value })} onFocus={(e) => { if (e.target.value === `Speler ${idx + 1}`) e.target.value = ''; }} placeholder={`Speler ${idx + 1}`} maxLength="20" />                    </div>
                   ))}
                 </div>
                 <button onClick={startWithNames} className="sdg-button">
